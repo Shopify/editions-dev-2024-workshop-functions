@@ -8,13 +8,19 @@ query RunInput($snowboardCollections: [ID!]!) {
       size: attribute(key: "Size") {
         value
       }
-      sidewall: attribute(key: "Sidewall Text") {
+      sidewallText: attribute(key: "Sidewall Text") {
         value
+      }
+      cost {
+        amountPerQuantity {
+          amount
+        }
       }
       merchandise {
         __typename
         ... on ProductVariant {
           product {
+            title
             isSnowboard: inAnyCollection(ids: $snowboardCollections)
           }
         }

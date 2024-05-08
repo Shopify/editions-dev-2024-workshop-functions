@@ -13,19 +13,51 @@
 /**
  * @typedef {import("../generated/api").RunInput} RunInput
  * @typedef {import("../generated/api").FunctionRunResult} FunctionRunResult
+ * @typedef {import("../generated/api").CartOperation} CartOperation
  */
-
-/**
- * @type {FunctionRunResult}
- */
-const NO_CHANGES = {
-  operations: [],
-};
 
 /**
  * @param {RunInput} input
  * @returns {FunctionRunResult}
  */
 export function run(input) {
-  return NO_CHANGES;
+  /** @type {CartOperation[]} */
+  const operations = [];
+  
+  for (const line of input.cart.lines) {
+    if (line.merchandise.__typename !== "ProductVariant") {
+      continue;
+    }
+
+    if (!line.merchandise.product.isSnowboard) {
+      continue;
+    }
+
+    if (!line.stiffness && !line.size && !line.sidewallText) {
+      continue;
+    }
+
+    const title = `${line.merchandise.product.title} - Customized`;
+    let price = line.cost.amountPerQuantity.amount;
+    
+    //TODO: Add to price based on customization options
+    
+    operations.push({
+      update: {
+        cartLineId: line.id,
+        title,
+        price: {
+          adjustment: {
+            fixedPricePerUnit: {
+              amount: price
+            }
+          }
+        }
+      }
+    })
+  }
+
+  return {
+    operations
+  }
 };
