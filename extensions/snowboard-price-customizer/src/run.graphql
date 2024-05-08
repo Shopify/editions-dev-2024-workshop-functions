@@ -1,0 +1,24 @@
+query RunInput($snowboardCollections: [ID!]!) {
+  cart {
+    lines {
+      id
+      stiffness: attribute(key: "Stiffness") {
+        value
+      }
+      size: attribute(key: "Size") {
+        value
+      }
+      sidewall: attribute(key: "Sidewall Text") {
+        value
+      }
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          product {
+            isSnowboard: inAnyCollection(ids: $snowboardCollections)
+          }
+        }
+      }
+    }
+  }
+}
