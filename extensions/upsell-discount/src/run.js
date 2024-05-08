@@ -26,23 +26,19 @@ export function run(input) {
   var discounts = [];
   for (const offer of configuration) {
     if (input.cart.cost.subtotalAmount.amount < offer.total) {
-      console.log(`Skipping offer ${offer.offered} because total is less than ${offer.total}`);
       continue;
     }
 
     for (const line of input.cart.lines) {
       if (line.isUpsell?.value !== 'true') {
-        console.log(`Skipping line ${line.id} because it is not an upsell`);
         continue;
       }
 
       if (line.merchandise.__typename !== "ProductVariant")  {
-        console.log(`Skipping line ${line.id} because it is not a product variant`);
         continue;
       }
 
       if (line.merchandise.product.id !== offer.offered) {
-        console.log(`Skipping line ${line.id} because it is not the product ${offer.offered}`);
         continue;
       }
 
