@@ -1,4 +1,4 @@
-query RunInput($snowboardCollections: [ID!]!) {
+query RunInput {
   cart {
     lines {
       id
@@ -21,7 +21,7 @@ query RunInput($snowboardCollections: [ID!]!) {
         ... on ProductVariant {
           product {
             title
-            isSnowboard: inAnyCollection(ids: $snowboardCollections)
+            productType
           }
         }
       }

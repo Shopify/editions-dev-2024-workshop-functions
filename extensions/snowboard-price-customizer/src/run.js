@@ -29,7 +29,7 @@ export function run(input) {
       continue;
     }
 
-    if (!line.merchandise.product.isSnowboard) {
+    if (line.merchandise.product.productType !== "snowboard") {
       continue;
     }
 
@@ -38,10 +38,35 @@ export function run(input) {
     }
 
     const title = `${line.merchandise.product.title} - Customized`;
-    let price = line.cost.amountPerQuantity.amount;
+    let price = parseFloat(line.cost.amountPerQuantity.amount);
     
     //TODO: Add to price based on customization options
+    if (line.stiffness?.value) {
+      const stiffnessInt = parseInt(line.stiffness.value);
+      if (Number.isNaN(stiffnessInt)) {
+        console.log(`Invalid stiffness value: ${line.stiffness.value}`);
+        continue;
+      }
+      price += stiffnessInt * 15;
+    }
     
+    if (line.size?.value) {
+      const sizeInt = parseInt(line.size.value.replace('W', ''));
+      if (Number.isNaN(sizeInt)) {
+        console.log(`Invalid size value: ${line.size.value}`);
+      }
+      if (sizeInt >= 160) {
+        price += 10;
+      }
+      if (line.size.value.endsWith('W')) {
+        price += 15;
+      }
+    }
+
+    if (line.sidewallText?.value) {
+      price += 20;
+    }
+
     operations.push({
       update: {
         cartLineId: line.id,
@@ -54,7 +79,7 @@ export function run(input) {
           }
         }
       }
-    })
+    });
   }
 
   return {

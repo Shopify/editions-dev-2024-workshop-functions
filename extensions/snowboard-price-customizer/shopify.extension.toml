@@ -18,7 +18,3 @@ type = "function"
   [extensions.ui.paths]
   create = "/"
   details = "/"
-
-  [extensions.input.variables]
-  namespace = "$app:snowboard-price-customizer"
-  key = "variables"
