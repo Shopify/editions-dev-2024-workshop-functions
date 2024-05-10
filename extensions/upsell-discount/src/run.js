@@ -5,6 +5,7 @@ import { DiscountApplicationStrategy } from "../generated/api";
  * @typedef {import("../generated/api").RunInput} RunInput
  * @typedef {import("../generated/api").FunctionRunResult} FunctionRunResult
  * @typedef {import("../generated/api").Discount} Discount
+ * @typedef {import("../../../lib/types").UpsellOfferConfiguration} UpsellOfferConfiguration
  */
 
 
@@ -14,7 +15,7 @@ import { DiscountApplicationStrategy } from "../generated/api";
  */
 export function run(input) {
   /**
-   * @type {{ total: number, offered: string, discount: number, quantity: number }[]}
+   * @type {UpsellOfferConfiguration}
    */
   const configuration = JSON.parse(
     input?.shop?.offers?.value ?? "{}"

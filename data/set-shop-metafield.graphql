@@ -1,7 +1,7 @@
 mutation {
   metafieldsSet(metafields: {
-    ownerId: "gid://shopify/Shop/59777646614",
-    namespace: "$app:upsell-offers",
+    ownerId: "gid://shopify/Shop/70144852192",
+    namespace: "upsell-offers",
     key: "offers",
     type: "json"
     value: "[{\"total\":0,\"offered\":\"gid://shopify/Product/8462660731104\",\"discount\":5,\"quantity\":1}]"
