@@ -40,7 +40,6 @@ export function run(input) {
     const title = `${line.merchandise.product.title} - Customized`;
     let price = parseFloat(line.cost.amountPerQuantity.amount);
     
-    //TODO: Add to price based on customization options
     if (line.stiffness?.value) {
       const stiffnessInt = parseInt(line.stiffness.value);
       if (Number.isNaN(stiffnessInt)) {
