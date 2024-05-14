@@ -1,6 +1,6 @@
 query RunInput {
   shop {
-    offers: metafield(namespace: "$app:upsell-offers", key: "offers") {
+    offers: metafield(namespace: "upsell-offers", key: "offers") {
       value
     }
   }
@@ -18,9 +18,7 @@ query RunInput {
       merchandise {
         __typename
         ...on ProductVariant {
-          product {
-            id
-          }
+          id
         }
       }
     }

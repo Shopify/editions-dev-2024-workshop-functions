@@ -15,7 +15,7 @@ import { DiscountApplicationStrategy } from "../generated/api";
  */
 export function run(input) {
   /**
-   * @type {UpsellOfferConfiguration}
+   * @type {UpsellOfferConfiguration[]}
    */
   const configuration = JSON.parse(
     input?.shop?.offers?.value ?? "{}"
@@ -39,7 +39,7 @@ export function run(input) {
         continue;
       }
 
-      if (line.merchandise.product.id !== offer.offered) {
+      if (line.merchandise.id !== offer.offered) {
         continue;
       }
 

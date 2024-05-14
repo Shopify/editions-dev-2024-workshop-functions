@@ -4,4 +4,4 @@ export type UpsellOfferConfiguration = {
     offered: string,
     discount: number,
     quantity: number
-}[];
+};
