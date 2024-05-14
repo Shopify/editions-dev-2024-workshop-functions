@@ -1,0 +1,12 @@
+mutation CreateCartTransform {
+  cartTransformCreate(functionId: "YOUR_FUNCTION_ID_HERE") {
+    cartTransform {
+      id
+      functionId
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

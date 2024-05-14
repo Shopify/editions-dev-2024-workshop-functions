@@ -1,6 +1,6 @@
-mutation {
+mutation CreateDiscount {
   discountAutomaticAppCreate(automaticAppDiscount: {
-    functionId: "6e1d1ec0-bd81-446b-a395-41cf69ed7f6e",
+    functionId: "YOUR_FUNCTION_ID_HERE",
     title: "Upsell discount",
     startsAt: "2022-06-22T00:00:00",
     combinesWith: {

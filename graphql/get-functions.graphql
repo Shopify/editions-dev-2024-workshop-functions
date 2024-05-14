@@ -1,0 +1,11 @@
+query GetFunctions {
+  shopifyFunctions(first: 100) {
+    nodes {
+      id
+      title
+      app {
+        title
+      }
+    }
+  }
+}
