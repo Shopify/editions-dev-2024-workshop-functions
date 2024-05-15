@@ -42,11 +42,10 @@ export function run(input) {
     
     if (line.stiffness?.value) {
       const stiffnessInt = parseInt(line.stiffness.value);
-      if (Number.isNaN(stiffnessInt)) {
+      if (Number.isNaN(stiffnessInt)) 
         console.log(`Invalid stiffness value: ${line.stiffness.value}`);
         continue;
-      }
-      (price += stiffnessInt) * 15;
+      price += stiffnessInt * 15;
     }
     
     if (line.size?.value) {
