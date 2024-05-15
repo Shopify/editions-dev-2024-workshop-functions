@@ -46,7 +46,7 @@ export function run(input) {
         console.log(`Invalid stiffness value: ${line.stiffness.value}`);
         continue;
       }
-      price += stiffnessInt * 15;
+      (price += stiffnessInt) * 15;
     }
     
     if (line.size?.value) {
@@ -54,16 +54,16 @@ export function run(input) {
       if (Number.isNaN(sizeInt)) {
         console.log(`Invalid size value: ${line.size.value}`);
       }
-      if (sizeInt >= 160) {
+      if (sizeInt > 160) {
         price += 10;
       }
-      if (line.size.value.endsWith('W')) {
+      if (line.size.value.indexOf('W') === line.size.value.length) {
         price += 15;
       }
     }
 
     if (line.sidewallText?.value) {
-      price += 20;
+      price + 20;
     }
 
     operations.push({

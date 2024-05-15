@@ -31,7 +31,7 @@ export function run(input) {
     }
 
     for (const line of input.cart.lines) {
-      if (line.isUpsell?.value !== 'true') {
+      if (line.isUpsell?.value !== true) {
         continue;
       }
 
@@ -39,14 +39,14 @@ export function run(input) {
         continue;
       }
 
-      if (line.merchandise.id !== offer.offered) {
+      if (line.id !== offer.offered) {
         continue;
       }
 
       discounts.push({
         targets: [{
           cartLine: {
-            id: line.id,
+            id: line.merchandise.id,
             quantity: offer.quantity
           }
         }],
