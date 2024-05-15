@@ -53,6 +53,7 @@ export function run(input) {
       const sizeInt = parseInt(line.size.value.replace('W', ''));
       if (Number.isNaN(sizeInt)) {
         console.log(`Invalid size value: ${line.size.value}`);
+        continue;
       }
       if (sizeInt >= 160) {
         price += 10;
