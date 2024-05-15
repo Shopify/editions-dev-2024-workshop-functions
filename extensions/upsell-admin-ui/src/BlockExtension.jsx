@@ -161,7 +161,7 @@ function App() {
     getProduct(productId).then(({data}) => setProduct(data.product));
   }, [data]);
 
-  if (!product || product.productType !== 'accessory') {
+  if (!product || product.productType !== 'accessories') {
     return null;
   }
 
