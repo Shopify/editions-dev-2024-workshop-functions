@@ -53,7 +53,7 @@ export function run(input) {
       if (Number.isNaN(sizeInt)) {
         console.log(`Invalid size value: ${line.size.value}`);
       }
-      if (sizeInt > 160) {
+      if (sizeInt >= 160) {
         price += 10;
       }
       if (line.size.value.indexOf('W') === line.size.value.length) {
