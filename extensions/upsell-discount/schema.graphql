@@ -252,7 +252,7 @@ type CartLineCost {
 }
 
 """
-A cart line targeted by a discount.
+A discount [Target](https://shopify.dev/api/functions/reference/product-discounts/graphql/common-objects/target) that applies to a specific cart line, up to an optional quantity limit.
 """
 input CartLineTarget {
   """
@@ -2681,8 +2681,7 @@ input Discount {
   """
   The targets of the discount.
 
-  This argument accepts a combination of `ProductVariantTarget`s and `CartLineTarget`s. If both kinds of
-  target affect the same cart line, the `quantity` of the `CartLineTarget` will be used up first.
+  This argument accepts a collection of either `ProductVariantTarget`s or `CartLineTarget`s, but not both.
   """
   targets: [Target!]!
 
@@ -2783,81 +2782,11 @@ input FunctionRunResult {
 }
 
 """
-Represents a gate configuration.
-"""
-type GateConfiguration implements HasMetafields {
-  """
-  An optional string identifier.
-  """
-  appId: String
-
-  """
-  A non-unique string used to group gate configurations.
-  """
-  handle: Handle
-
-  """
-  The ID of the gate configuration.
-  """
-  id: ID!
-
-  """
-  Returns a metafield by namespace and key that belongs to the resource.
-  """
-  metafield(
-    """
-    The key for the metafield.
-    """
-    key: String!
-
-    """
-    The container the metafield belongs to. If omitted, the app-reserved namespace will be used.
-    """
-    namespace: String
-  ): Metafield
-}
-
-"""
-Represents a connection from a subject to a gate configuration.
-"""
-type GateSubject {
-  """
-  The bound gate configuration.
-  """
-  configuration(
-    """
-    The appId of the gate configurations to search for.
-    """
-    appId: String @deprecated(reason: "Use GateSubject.handle to filter gates instead.")
-  ): GateConfiguration!
-
-  """
-  The ID of the gate subject.
-  """
-  id: ID!
-}
-
-"""
 A function-scoped handle to a refer a resource.
 The Handle type appears in a JSON response as a String, but it is not intended to be human-readable.
 Example value: `"10079785100"`
 """
 scalar Handle
-
-"""
-Gate subjects associated to the specified resource.
-"""
-interface HasGates {
-  """
-  Returns active gate subjects bound to the resource.
-  """
-  gates(
-    """
-    The handle of the gate configurations to search for.
-    """
-    handle: Handle
-  ): [GateSubject!]!
-}
 
 """
 Represents information about the metafields associated to the specified resource.
@@ -2931,6 +2860,23 @@ type Input {
   """
   shop: Shop!
 }
+
+"""
+A [JSON](https://www.json.org/json-en.html) object.
+
+Example value:
+`{
+  "product": {
+    "id": "gid://shopify/Product/1346443542550",
+    "title": "White T-shirt",
+    "options": [{
+      "name": "Size",
+      "values": ["M", "L"]
+    }]
+  }
+}`
+"""
+scalar JSON
 
 """
 A language.
@@ -3022,11 +2968,6 @@ enum LanguageCode {
   CE
 
   """
-  Central Kurdish.
-  """
-  CKB
-
-  """
   Czech.
   """
   CS
@@ -3105,11 +3046,6 @@ enum LanguageCode {
   Finnish.
   """
   FI
-
-  """
-  Filipino.
-  """
-  FIL
 
   """
   Faroese.
@@ -3462,16 +3398,6 @@ enum LanguageCode {
   RW
 
   """
-  Sanskrit.
-  """
-  SA
-
-  """
-  Sardinian.
-  """
-  SC
-
-  """
   Sindhi.
   """
   SD
@@ -3817,7 +3743,7 @@ type MailingAddress {
   phone: String
 
   """
-  The two-letter code for the region. For example, ON.
+  The alphanumeric code for the region. For example, ON.
   """
   provinceCode: String
 
@@ -3907,13 +3833,18 @@ For more information about the Shopify resources that you can attach metafields 
 """
 type Metafield {
   """
+  The data stored in the metafield in JSON format.
+  """
+  jsonValue: JSON!
+
+  """
   The type of data that the metafield stores in the `value` field.
   Refer to the list of [supported types](https://shopify.dev/apps/metafields/types).
   """
   type: String!
 
   """
-  The data to store in the metafield. The data is always stored as a string, regardless of the metafield's type.
+  The data stored in the metafield. Always stored as a string, regardless of the metafield's type.
   """
   value: String!
 }
@@ -3973,17 +3904,7 @@ input Percentage {
 """
 Represents a product.
 """
-type Product implements HasGates & HasMetafields {
-  """
-  Returns active gate subjects bound to the resource.
-  """
-  gates(
-    """
-    The handle of the gate configurations to search for.
-    """
-    handle: Handle
-  ): [GateSubject!]!
-
+type Product implements HasMetafields {
   """
   A unique human-friendly string of the product's title.
   """
@@ -4126,7 +4047,8 @@ type ProductVariant implements HasMetafields {
 }
 
 """
-A product variant targeted by a discount.
+A discount [Target](https://shopify.dev/api/functions/reference/product-discounts/graphql/common-objects/target) that can apply to any cart lines for a specific product variant, up to an
+optional quantity limit.
 """
 input ProductVariantTarget {
   """
@@ -4135,8 +4057,8 @@ input ProductVariantTarget {
   id: ID!
 
   """
-  The number of line items that are being discounted.
-  The default value is `null`, which represents the quantity of the matching line items.
+  The maximum number of line item units to be discounted.
+  The default value is `null`, which represents the total quantity of the matching line items.
 
   The value is validated against: > 0.
   """
@@ -4272,24 +4194,24 @@ type Shop implements HasMetafields {
 }
 
 """
-A target of a discount.
+A target of a discount, which determines which cart line(s) the discount will affect.
 
-A discount can have a combination of `ProductVariantTarget`s and `CartLineTarget`s.
+A discount can have a collection of either `ProductVariantTarget`s or `CartLineTarget`s, but not both.
 
 Multiple targets with the same type and ID are the same as a single target of that type and ID with their
 quantities added together, or `null` if any of those targets have a quantity of `null`.
 
-If both kinds of target affect the same cart line, the `quantity` of the `CartLineTarget` will be used up
-first.
+See the [Product Discount API reference](https://shopify.dev/docs/api/functions/reference/product-discounts/graphql#functionrunresult) for examples.
 """
 input Target @oneOf {
   """
-  A cart line targeted by a discount.
+  A discount [Target](https://shopify.dev/api/functions/reference/product-discounts/graphql/common-objects/target) that applies to a specific cart line, up to an optional quantity limit.
   """
   cartLine: CartLineTarget
 
   """
-  A product variant targeted by a discount.
+  A discount [Target](https://shopify.dev/api/functions/reference/product-discounts/graphql/common-objects/target) that can apply to any cart lines for a specific product variant, up to an
+  optional quantity limit.
   """
   productVariant: ProductVariantTarget
 }

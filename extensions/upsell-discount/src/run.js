@@ -17,9 +17,7 @@ export function run(input) {
   /**
    * @type {UpsellOfferConfiguration[]}
    */
-  const configuration = JSON.parse(
-    input?.shop?.offers?.value ?? "{}"
-  );
+  const configuration = input?.shop?.offers?.jsonValue ?? [];
 
   /**
    * @type {Discount[]}

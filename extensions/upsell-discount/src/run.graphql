@@ -1,7 +1,7 @@
 query RunInput {
   shop {
     offers: metafield(namespace: "upsell-offers", key: "offers") {
-      value
+      jsonValue
     }
   }
   cart {
