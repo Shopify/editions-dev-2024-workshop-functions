@@ -24,23 +24,29 @@ export function run(input) {
    */
   var discounts = [];
   for (const offer of configuration) {
+    //HINT: console.log(`Checking offer ${offer.offered} ${offer.total}`)
     if (input.cart.cost.subtotalAmount.amount < offer.total) {
       continue;
     }
 
     for (const line of input.cart.lines) {
-      if (line.isUpsell?.value !== true) {
-        continue;
-      }
-
       if (line.merchandise.__typename !== "ProductVariant")  {
         continue;
       }
 
+      //HINT: console.log(`Checking ${line.id}`);
+
       if (line.id !== offer.offered) {
+        //HINT: console.log(`${line.id} did not match ${offer.offered}`);
         continue;
       }
 
+      if (line.isUpsell?.value !== true) {
+        //HINT: console.log(`not isUpsell: ${line.isUpsell?.value} ${typeof line.isUpsell?.value}`);
+        continue;
+      }
+
+      //HINT: console.log(`Adding discount for ${line.merchandise.id}`);
       discounts.push({
         targets: [{
           cartLine: {
