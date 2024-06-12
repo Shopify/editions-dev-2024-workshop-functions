@@ -40,6 +40,7 @@ export function run(input) {
     const title = `${line.merchandise.product.title} - Customized`;
     let price = parseFloat(line.cost.amountPerQuantity.amount);
     
+    // HINT: Set a breakpoint here
     if (line.stiffness?.value) {
       const stiffnessInt = parseInt(line.stiffness.value);
       if (Number.isNaN(stiffnessInt)) 
@@ -56,11 +57,13 @@ export function run(input) {
       if (sizeInt >= 160) {
         price += 10;
       }
+      // HINT: ... then set a breakpoint here
       if (line.size.value.indexOf('W') === line.size.value.length) {
         price += 15;
       }
     }
 
+    // HINT: ... and then set a breakpoint here
     if (line.sidewallText?.value) {
       price + 20;
     }
