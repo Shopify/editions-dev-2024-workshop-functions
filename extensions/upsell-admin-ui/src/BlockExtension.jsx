@@ -141,6 +141,11 @@ async function saveConfig(shopId, offers) {
   return res.json();
 }
 
+function safeParseFloat(value, defaultValue = 0) {
+  const parsed = parseFloat(value);
+  return Number.isNaN(parsed) ? defaultValue : parsed;
+}
+
 function App() {
   const {i18n, data} = useApi(TARGET);
   const [product, setProduct] = useState(/** @type {ProductFields | undefined} */ (undefined));
@@ -162,7 +167,7 @@ function App() {
   }, [data]);
 
   if (!product || product.productType !== 'accessories') {
-    return null;
+    return <Text fontWeight='bold'>This editor only applies to products of type `accessories`.</Text>;
   }
 
   const getDefaultTotal = (variant) => {
@@ -173,15 +178,15 @@ function App() {
   const handleTotalChange = (variant, value) => {
     const existing = offers && offers.find((offer) => offer.offered === variant.id);
     if (existing) {
-      existing.total = parseFloat(value);
+      existing.total = safeParseFloat(value);
       setOffers([...offers ?? []]);
     } else {
       setOffers([
         ...offers ?? [],
         {
           offered: variant.id,
-          total: parseFloat(value),
-          discount: 0,
+          total: safeParseFloat(value),
+          discount: null,
           quantity: 1,
         }
       ]);
@@ -190,13 +195,13 @@ function App() {
 
   const getDefaultDiscount = (variant) => {
     const existing = offers && offers.find((offer) => offer.offered === variant.id);
-    return existing ? existing.discount.toString() : undefined
+    return existing ? existing.discount?.toString() : undefined
   }
 
   const handleDiscountChange = (variant, value) => {
     const existing = offers && offers.find((offer) => offer.offered === variant.id);
     if (existing) {
-      existing.discount = parseFloat(value);
+      existing.discount = safeParseFloat(value);
       setOffers([...offers ?? []]);
     } else {
       setOffers([
@@ -204,7 +209,7 @@ function App() {
         {
           offered: variant.id,
           total: 0,
-          discount: parseFloat(value),
+          discount: safeParseFloat(value),
           quantity: 1,
         }
       ]);
