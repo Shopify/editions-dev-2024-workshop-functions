@@ -162,7 +162,7 @@ function App() {
   }, [data]);
 
   if (!product || product.productType !== 'accessories') {
-    return null;
+    return <Text fontWeight='bold'>This editor only applies to products of type `accessories`.</Text>;
   }
 
   const getDefaultTotal = (variant) => {
