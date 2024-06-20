@@ -50,7 +50,7 @@ export function run(input) {
         }],
         value: {
           percentage: {
-            value: offer.discount
+            value: offer.discount ?? 0
           }
         }
       })

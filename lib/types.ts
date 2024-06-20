@@ -2,6 +2,6 @@
 export type UpsellOfferConfiguration = {
     total: number,
     offered: string,
-    discount: number,
+    discount: number | null,
     quantity: number
 };
