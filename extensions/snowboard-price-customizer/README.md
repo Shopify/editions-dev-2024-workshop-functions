@@ -1,3 +1,9 @@
+# Snowboard price customizer function
+
+This cart transform will update pricing based on cart line attributes. This is most easily tested by adding some custom liquid to your product template via the online store editor:
+
+
+```liquid
 {% if product.type == 'snowboard' %}
 
 {%- assign product_form_id = 'product-form-' | append: section.id -%}
@@ -38,12 +44,4 @@
 </div>
 
 {% endif %}
-
-{% schema %}
-{
-  "name": "Snowboard customizer",
-  "target": "section",
-  "settings": []
-}
-{% endschema %}
-
+```
